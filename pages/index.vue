@@ -9,26 +9,9 @@
     <section class="section">
       <div class="container">
         <div class="columns">
-          <!-- Output Section -->
-          <div class="column is-three-quarters">
-            <div v-if="words.length > 0">
-              <div v-for="i in 11" :key="i">
-                <div v-if="letterNumbers(i + 3).length !== 0">
-                  <div>{{ i + 3 }} Letters</div>
-                  <div class="">
-                    <div v-for="(word, x) in letterNumbers(i + 3)" :key="x">
-                      <div class="button">
-                        {{ word.word }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Input Fields -->
           <div class="column">
+            <div class="title">Search Options</div>
             <b-field label="Starting Letters">
               <b-input v-model="startLetters"></b-input>
             </b-field>
@@ -53,9 +36,35 @@
               <b-button type="is-warning" expanded @click="getWords"
                 >Generate Words</b-button
               >
-              <b-button type="is-warning is-light" expanded @click="removeNames"
+              <b-button type="" expanded @click="removeNames"
                 >Remove Proper Names</b-button
               >
+            </div>
+          </div>
+
+          <!-- Output Section -->
+          <div class="column is-three-quarters">
+            <div v-if="words.length > 0">
+              <div class="title">Words Found</div>
+              <div v-for="i in 11" :key="i" class="block">
+                <div v-if="letterNumbers(i + 3).length !== 0">
+                  <div class="subtitle">{{ i + 3 }} Letters</div>
+                  <div class="buttons">
+                    <div
+                      v-for="(word, x) in letterNumbers(i + 3)"
+                      :key="x"
+                      class="button is-warning is-light"
+                    >
+                      {{ word.word }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              <figure class="image">
+                <img src="~/assets/images/bee.png" alt="" />
+              </figure>
             </div>
           </div>
         </div>
