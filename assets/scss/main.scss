@@ -1,0 +1,7 @@
+// Set your colors
+$primary: hsl(44, 100%, 77%);
+$link: hsl(44, 100%, 77%);
+$link-hover: $primary;
+
+@import '~bulma';
+@import '~buefy/src/scss/buefy';

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-warning">
+    <section class="hero is-primary">
       <div class="hero-body">
         <p class="title">Beefuddled?</p>
         <p class="subtitle">Start searching for the right words!</p>
