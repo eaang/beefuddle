@@ -77,7 +77,7 @@
 export default {
   data() {
     return {
-      baseUrl: 'http://api.datamuse.com/words?sp=',
+      baseUrl: 'https://api.datamuse.com/words?sp=',
       startLetters: '',
       requiredLetters: '',
       excludedLetters: '',
