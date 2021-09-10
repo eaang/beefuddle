@@ -50,24 +50,34 @@
                 <div v-if="letterNumbers(i + 3).length !== 0">
                   <div class="subtitle">{{ i + 3 }} Letters</div>
                   <div>
-                    <div v-for="(word, x) in letterNumbers(i + 3)" :key="x">
-                      <b-tooltip
-                        :label="definitions"
-                        position="is-bottom"
-                        :triggers="['click']"
-                        :delay="500"
+                    <b-tooltip
+                      v-for="(word, x) in letterNumbers(i + 3)"
+                      :key="x"
+                      position="is-bottom"
+                      :triggers="['click']"
+                      :delay="800"
+                      multilined
+                      class="mr-2 mb-2"
+                    >
+                      <b-button
+                        class="is-warning is-light"
+                        @click="
+                          dictSearch(word.word)
+                          tooltip = true
+                        "
                       >
+                        {{ word.word }}
+                      </b-button>
+                      <template #content>
                         <div
-                          class="button is-warning is-light"
-                          @click="
-                            dictSearch(word.word)
-                            tooltip = true
-                          "
+                          v-for="(definition, ind) in definitions"
+                          :key="ind"
+                          class="mb-1"
                         >
-                          {{ word.word }}
-                        </div></b-tooltip
-                      >
-                    </div>
+                          {{ capitalizeFirstLetter(definition[0].definition) }}
+                        </div>
+                      </template>
+                    </b-tooltip>
                   </div>
                 </div>
               </div>
@@ -151,8 +161,11 @@ export default {
         })
         this.definitions = definitions
       } else {
-        this.definitions = 'No definition found!'
+        this.definitions = [[{ definition: 'No definition found!' }]]
       }
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
     },
     editLetters() {
       if (this.startLetters.length >= this.wordLength) {
