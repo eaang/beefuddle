@@ -2,7 +2,7 @@
   <div>
     <section class="hero is-primary">
       <div class="hero-body">
-        <p class="title">Beefuddled?</p>
+        <p class="title is-clickable" @click="refresh">Beefuddled?</p>
         <p class="subtitle">Start searching for the right words!</p>
       </div>
     </section>
@@ -103,7 +103,7 @@ export default {
       requiredLetters: '',
       excludedLetters: '',
       wordLength: 'Any',
-      wordOption: ['Any', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+      wordOption: ['Any', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       words: [],
       definitions: null,
     }
@@ -150,6 +150,9 @@ export default {
     },
   },
   methods: {
+    refresh() {
+      location.reload()
+    },
     async dictSearch(x) {
       const def = await this.$axios
         .get('https://api.dictionaryapi.dev/api/v2/entries/en/' + x)
