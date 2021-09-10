@@ -49,14 +49,35 @@
               <div v-for="i in 11" :key="i" class="block">
                 <div v-if="letterNumbers(i + 3).length !== 0">
                   <div class="subtitle">{{ i + 3 }} Letters</div>
-                  <div class="buttons">
-                    <div
+                  <div>
+                    <b-tooltip
                       v-for="(word, x) in letterNumbers(i + 3)"
                       :key="x"
-                      class="button is-warning is-light"
+                      position="is-bottom"
+                      :triggers="['click']"
+                      :delay="800"
+                      multilined
+                      class="mr-2 mb-2"
                     >
-                      {{ word.word }}
-                    </div>
+                      <b-button
+                        class="is-warning is-light"
+                        @click="
+                          dictSearch(word.word)
+                          tooltip = true
+                        "
+                      >
+                        {{ word.word }}
+                      </b-button>
+                      <template #content>
+                        <div
+                          v-for="(definition, ind) in definitions"
+                          :key="ind"
+                          class="mb-1"
+                        >
+                          {{ capitalizeFirstLetter(definition[0].definition) }}
+                        </div>
+                      </template>
+                    </b-tooltip>
                   </div>
                 </div>
               </div>
@@ -84,6 +105,7 @@ export default {
       wordLength: 'Any',
       wordOption: ['Any', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       words: [],
+      definitions: null,
     }
   },
   computed: {
@@ -128,6 +150,23 @@ export default {
     },
   },
   methods: {
+    async dictSearch(x) {
+      const def = await this.$axios
+        .get('https://api.dictionaryapi.dev/api/v2/entries/en/' + x)
+        .catch((err) => err)
+      if (def.data !== undefined) {
+        const definitions = []
+        def.data[0].meanings.forEach((def) => {
+          definitions.push(def.definitions)
+        })
+        this.definitions = definitions
+      } else {
+        this.definitions = [[{ definition: 'No definition found!' }]]
+      }
+    },
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+    },
     editLetters() {
       if (this.startLetters.length >= this.wordLength) {
         this.startLetters = this.startLetters.substring(0, this.wordLength - 1)
