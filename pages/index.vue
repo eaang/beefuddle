@@ -55,7 +55,7 @@
                       :key="x"
                       position="is-bottom"
                       :triggers="['click']"
-                      :delay="800"
+                      :delay="1000"
                       multilined
                       class="mr-2 mb-2"
                     >
