@@ -45,19 +45,28 @@
           <!-- Output Section -->
           <div class="column is-three-quarters">
             <div v-if="words.length > 0">
-              {{ definitions }}
               <div class="title">Words Found</div>
               <div v-for="i in 11" :key="i" class="block">
                 <div v-if="letterNumbers(i + 3).length !== 0">
                   <div class="subtitle">{{ i + 3 }} Letters</div>
-                  <div class="buttons">
-                    <div
-                      v-for="(word, x) in letterNumbers(i + 3)"
-                      :key="x"
-                      class="button is-warning is-light"
-                      @click="dictSearch(word.word)"
-                    >
-                      {{ word.word }}
+                  <div>
+                    <div v-for="(word, x) in letterNumbers(i + 3)" :key="x">
+                      <b-tooltip
+                        :label="definitions"
+                        position="is-bottom"
+                        :triggers="['click']"
+                        :delay="500"
+                      >
+                        <div
+                          class="button is-warning is-light"
+                          @click="
+                            dictSearch(word.word)
+                            tooltip = true
+                          "
+                        >
+                          {{ word.word }}
+                        </div></b-tooltip
+                      >
                     </div>
                   </div>
                 </div>
@@ -86,7 +95,7 @@ export default {
       wordLength: 'Any',
       wordOption: ['Any', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       words: [],
-      definitions: [],
+      definitions: null,
     }
   },
   computed: {
