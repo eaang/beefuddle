@@ -45,6 +45,7 @@
           <!-- Output Section -->
           <div class="column is-three-quarters">
             <div v-if="words.length > 0">
+              {{ definitions }}
               <div class="title">Words Found</div>
               <div v-for="i in 11" :key="i" class="block">
                 <div v-if="letterNumbers(i + 3).length !== 0">
@@ -54,6 +55,7 @@
                       v-for="(word, x) in letterNumbers(i + 3)"
                       :key="x"
                       class="button is-warning is-light"
+                      @click="dictSearch(word.word)"
                     >
                       {{ word.word }}
                     </div>
@@ -84,6 +86,7 @@ export default {
       wordLength: 'Any',
       wordOption: ['Any', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
       words: [],
+      definitions: [],
     }
   },
   computed: {
@@ -128,6 +131,20 @@ export default {
     },
   },
   methods: {
+    async dictSearch(x) {
+      const def = await this.$axios
+        .get('https://api.dictionaryapi.dev/api/v2/entries/en/' + x)
+        .catch((err) => err)
+      if (def.data !== undefined) {
+        const definitions = []
+        def.data[0].meanings.forEach((def) => {
+          definitions.push(def.definitions)
+        })
+        this.definitions = definitions
+      } else {
+        this.definitions = 'No definition found!'
+      }
+    },
     editLetters() {
       if (this.startLetters.length >= this.wordLength) {
         this.startLetters = this.startLetters.substring(0, this.wordLength - 1)
